@@ -1,0 +1,66 @@
+<div class="container mx-auto p-6">
+    <h1>Lista de Productos</h1>
+    <form [formGroup]="productoForm">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="flex flex-col">
+                <label for="">Ingrese Nombre:</label>
+                <input type="text" formControlName="nombre" class="px-4 py-2 border rounded-md">
+            </div>
+           <div class="flex flex-col">
+            <label for="">Ingrese cod_producto:</label>
+            <input type="text" formControlName="cod_producto" class="px-4 py-2 border rounded-md">
+             </div>
+               <div class="flex flex-col">
+            <label for="">Ingrese precio:</label>
+            <input type="text" formControlName="precio" class="px-4 py-2 border rounded-md">
+            
+             </div>
+               <div class="flex flex-col">
+            <label for="">Ingrese stock:</label>
+            <input type="text" formControlName="stock" class="px-4 py-2 border rounded-md">
+            
+             </div>
+               <div class="flex flex-col">
+            <label for="">Ingrese descripcion:</label>
+            <input type="text" formControlName="descripcion" class="px-4 py-2 border rounded-md">
+             </div>
+            <button type="button" class="bg-blue-500 px-4 py-2 rounded text-white hover:bg-blue-700" (click)="funGuardar()">Guardar Producto</button>
+        </div>
+    </form>
+
+    <div class="overflow-x-auto bg-white border">
+
+
+        <table class="w-full text-left border-collapse">
+            <thead class="bg-gray-200 border-b">
+                <tr>
+                    <th>ID</th>
+                    <th>NOMBRE</th>
+                    <th>PRECIO</th>
+                    <th>STOCK</th>
+                    <th>IMAGEN</th>
+                    <th>CATEGORIA</th>
+                    <th>ACCIONES</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y">
+                @for (item of productos(); track $index) {
+                    <tr class="hover:bg-blue-50/50">
+                        <td class="px-6 py-4 text-sm ">{{ item.id}}</td>
+                        <td class="px-6 py-4 text-sm ">{{ item.nombre }}</td>
+                        <td class="px-6 py-4 text-sm ">{{ item.precio }}</td>
+                        <td class="px-6 py-4 text-sm ">{{ item.stock }}</td>
+                        <td class="px-6 py-4 text-sm ">
+                            <img [src]="`https://laravue2.blumbit.net/back/public/${item.imagen}`" alt="" width="100">
+                        </td>
+                        <td class="px-6 py-4 text-sm ">{{ item.categoria.nombre }}</td>
+                        <td class="px-6 py-4 text-sm "></td>
+                    </tr>
+                }
+            </tbody>
+        
+        </table>
+    
+    </div>
+
+</div>
