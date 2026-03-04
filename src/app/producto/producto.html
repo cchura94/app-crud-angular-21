@@ -1,14 +1,41 @@
 <div class="container mx-auto p-6">
     <h1>Lista de Productos</h1>
+    <div class="max-w-sm rounded-2xl overflow-hidden shadow-lg bg-white">
+        <div class="p-6">
+            <h2 class="text-xl font-bold mb-2 text-gray-800">Nombre: {{ productoForm.value.nombre }}</h2>
+            <h2 class="text-xl font-bold mb-2 text-gray-800">Cod Prod: {{ productoForm.value.cod_producto }}</h2>
+            <h2 class="text-xl font-bold mb-2 text-gray-800">Precio: {{ productoForm.value.precio }}</h2>
+            <h2 class="text-xl font-bold mb-2 text-gray-800">Stock: {{ productoForm.value.stock }}</h2>
+            <h2 class="text-xl font-bold mb-2 text-gray-800">Descripción: {{ productoForm.value.descripcion }}</h2>
+            <h2  class="text-xl font-bold mb-2 text-gray-800">VALIDO?: {{productoForm.valid}}</h2>
+        </div>
+
+    </div>
     <form [formGroup]="productoForm">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4" [style]="`border: ${productoForm.valid?'#0f0':'#F00'} 4px dashed;`">
             <div class="flex flex-col">
                 <label for="">Ingrese Nombre:</label>
-                <input type="text" formControlName="nombre" class="px-4 py-2 border rounded-md">
+                <input 
+                    type="text"
+                    formControlName="nombre"
+                    class="px-4 py-2 border rounded-md"
+                    [ngClass]="{
+                        'border-red-500': productoForm.get('nombre')?.invalid && productoForm.get('nombre')?.touched,
+                        'border-green-500': productoForm.get('nombre')?.valid && productoForm.get('nombre')?.touched,
+                    }">
+                @if (productoForm.get('nombre')?.errors?.['required']) {
+                    <small>El Nombre es Obligatorio</small>
+                }
+                @if (productoForm.get('nombre')?.errors?.['minlength']) {
+                    <small>Debe tener minimo 3 caracteres</small>
+                }
             </div>
            <div class="flex flex-col">
             <label for="">Ingrese cod_producto:</label>
-            <input type="text" formControlName="cod_producto" class="px-4 py-2 border rounded-md">
+            <input type="text" formControlName="cod_producto" class="px-4 py-2 border rounded-md" [ngClass]="{
+                'border-red-500': productoForm.get('cod_producto')?.invalid && productoForm.get('cod_producto')?.touched,
+                'border-green-500': productoForm.get('cod_producto')?.valid && productoForm.get('cod_producto')?.touched,
+            }">
              </div>
                <div class="flex flex-col">
             <label for="">Ingrese precio:</label>
@@ -24,9 +51,66 @@
             <label for="">Ingrese descripcion:</label>
             <input type="text" formControlName="descripcion" class="px-4 py-2 border rounded-md">
              </div>
-            <button type="button" class="bg-blue-500 px-4 py-2 rounded text-white hover:bg-blue-700" (click)="funGuardar()">Guardar Producto</button>
+            <button type="button" [class]="`bg-blue-500 px-4 py-2 rounded text-white ${productoForm.valid?'hover:bg-blue-700':'hover:bg-red-700'}`" (click)="funGuardar()" [disabled]="!productoForm.valid">Guardar Producto</button>
         </div>
     </form>
+
+    <button class="bg-blue-500 px-4 py-2 rounded text-white" (click)="mostrarDialog.set(true)">Nuevo Producto</button>
+
+    @if (mostrarDialog()) {
+        <div class="fixed inset-0 flex items-center justify-center z-50">
+            <div class="absolute inset-0 bg-black opacity-50">
+    
+            </div>
+            <div class="relative bg-white rounded-xl shadow-xl w-96 p-6 ">
+                <form [formGroup]="productoForm">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4" [style]="`border: ${productoForm.valid?'#0f0':'#F00'} 4px dashed;`">
+                        <div class="flex flex-col">
+                            <label for="">Ingrese Nombre:</label>
+                            <input 
+                                type="text"
+                                formControlName="nombre"
+                                class="px-4 py-2 border rounded-md"
+                                [ngClass]="{
+                                    'border-red-500': productoForm.get('nombre')?.invalid && productoForm.get('nombre')?.touched,
+                                    'border-green-500': productoForm.get('nombre')?.valid && productoForm.get('nombre')?.touched,
+                                }">
+                            @if (productoForm.get('nombre')?.errors?.['required']) {
+                                <small>El Nombre es Obligatorio</small>
+                            }
+                            @if (productoForm.get('nombre')?.errors?.['minlength']) {
+                                <small>Debe tener minimo 3 caracteres</small>
+                            }
+                        </div>
+                       <div class="flex flex-col">
+                        <label for="">Ingrese cod_producto:</label>
+                        <input type="text" formControlName="cod_producto" class="px-4 py-2 border rounded-md" [ngClass]="{
+                            'border-red-500': productoForm.get('cod_producto')?.invalid && productoForm.get('cod_producto')?.touched,
+                            'border-green-500': productoForm.get('cod_producto')?.valid && productoForm.get('cod_producto')?.touched,
+                        }">
+                         </div>
+                           <div class="flex flex-col">
+                        <label for="">Ingrese precio:</label>
+                        <input type="text" formControlName="precio" class="px-4 py-2 border rounded-md">
+                        
+                         </div>
+                           <div class="flex flex-col">
+                        <label for="">Ingrese stock:</label>
+                        <input type="text" formControlName="stock" class="px-4 py-2 border rounded-md">
+                        
+                         </div>
+                           <div class="flex flex-col">
+                        <label for="">Ingrese descripcion:</label>
+                        <input type="text" formControlName="descripcion" class="px-4 py-2 border rounded-md">
+                         </div>
+                        <button type="button" [class]="`bg-blue-500 px-4 py-2 rounded text-white ${productoForm.valid?'hover:bg-blue-700':'hover:bg-red-700'}`" (click)="funGuardar()" [disabled]="!productoForm.valid">Guardar Producto</button>
+                    </div>
+                </form>
+            </div>
+    
+        </div>
+
+    }
 
     <div class="overflow-x-auto bg-white border">
 
@@ -54,7 +138,11 @@
                             <img [src]="`https://laravue2.blumbit.net/back/public/${item.imagen}`" alt="" width="100">
                         </td>
                         <td class="px-6 py-4 text-sm ">{{ item.categoria.nombre }}</td>
-                        <td class="px-6 py-4 text-sm "></td>
+                        <td class="px-6 py-4 text-sm ">
+                            <button class="bg-blue-500 px-4 py-2 rounded text-white" (click)="funEditar(item)">Editar</button>
+                            <button class="bg-red-500 px-4 py-2 rounded text-white" (click)="funEliminar(item.id)">Eliminar</button>
+
+                        </td>
                     </tr>
                 }
             </tbody>
